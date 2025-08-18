@@ -55,15 +55,20 @@ attn_scores = attn_scores + m*(x-y)
 ```
 - m*(x-y)는 파이토치 기준 requires_grad=False이므로 역전파를 통해 값이 업데이트 되지 않습니다. 
 
-논문에 따르면, ALiBi는 아래의 그림처럼 학습 중 보지 못했던 긴 시퀀스에 대해서도 다른 인코딩 방식(사인파, RoPE, T5 Bias)과 비교했을 때,성능(PPL)이 거의 떨어지지 않습니다. 
+ALiBi는 아래의 그림처럼 학습 중 보지 못했던 긴 시퀀스에 대해서도 다른 인코딩 방식(사인파, RoPE, T5 Bias)과 비교했을 때,성능(PPL)이 거의 떨어지지 않습니다. 
 
 <div align="center">
   <img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/b825ac2f-1a35-417f-8cc5-4ba112f93957" />
 </div>
 
+또한, 간단한 인코딩 방식을 사용하기 때문에 학습과 추론 처리 시간(초당 처리 토큰(또는 단어) 수)도 매우 효율적입니다. 
+
 <div align="center">
-<img width="517" height="171" alt="image" src="https://github.com/user-attachments/assets/d7b7debf-16ce-444d-ab9e-4737c29180fd" />
+<img width="500" height="200" alt="image" src="https://github.com/user-attachments/assets/d7b7debf-16ce-444d-ab9e-4737c29180fd" />
 </div>
+
+- RoPE와 T5의 상대 위치 편향은 사인파나 ALiBi처럼 계산으로 처리하는 게 아니라, 추가적인 연산(예: RoPE의 경우 토큰 임베딩을 회전하는 처리, T5의 상대적 위치 편향은 룩업 테이블, 버킷 등)이 필요하지만,
+- 사인파 방식과 ALiBi는 정해진 값을 단순 추가하는 방식이기 때문에 속도가 더 빠를 수밖에 없습니다. 사인파와 ALiBi의 속도가 거의 동일한 것을 볼 수 있습니다. 
 
 ## 2. GQA(Grouped-query-Attention)
 
