@@ -111,4 +111,6 @@ gqa_scores = gqa_scores + alibi_bias
 - 이렇게 하면 첫 번째 쿼리 헤드에는 첫 번째 alibi_bias가 N번째 쿼리 헤드에는 N번째 alibi_bias가 정확히 매핑됩니다.
 - 즉, ALiBi의 헤드별 고유 bias라는 원칙을 GQA 환경에서도 그대로 유지시킬 수 있습니다. 
 
-인코더의 셀프 어텐션에서는 MHA + ALiBi를, 디코더의 셀프 어텐션에는 GQA + ALiBi, 그리고 디코더의 크로스 어텐션에는 GQA만 적용했으며, 이는 <code>attention.py</code>와 <code>transformer.py</code>에서 확인할 수 있습니다. 
+인코더의 셀프 어텐션은 병목 구간이 아니기 때문에 MHA를 사용해도 무방합니다.
+
+그래서서 인코더의 셀프 어텐션에는 MHA + ALiBi를, 디코더의 셀프 어텐션에는 GQA + ALiBi, 그리고 디코더의 크로스 어텐션에는 GQA만 적용했으며, 이는 <code>attention.py</code>와 <code>transformer.py</code>에서 확인할 수 있습니다. 
