@@ -14,16 +14,13 @@ def get_slopes(num_heads, device):
     n = 2 ** math.floor(math.log2(num_heads))
     m_0 = 2.0 ** (-8.0 / n) # 2^{-8/n}
     m = torch.pow(m_0, torch.arange(1, 1+n))
-
-    if n < num_heads: # if num_heads is not a power of 2, add the remaining slopes
-        m_hat_0 = 2.0 ** (-8.0 / 2*n) # 2^{-8/2n}
-        m_hat = torch.pow(m_hat_0, torch.arange(1, 1 + 2*(num_heads-n)))
-        m = torch.cat([m, m_hat])
+    
     return m.unsqueeze(-1).unsqueeze(-1).to(device) # m.shape: [num_heads, 1, 1]
 
 def get_relative_positions(seq_length, device):
     x = torch.arange(seq_length, device=device)[None, :]
     y = torch.arange(seq_length, device=device)[:, None]
+    
     return x-y
 
 class ALiBiGroupedQueryAttention(nn.Module):
@@ -159,6 +156,7 @@ if __name__ == '__main__':
 
     attn_output = a.forward(q, k, v, None,True)
     print(attn_output.shape)
+
 
 
 
