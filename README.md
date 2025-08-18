@@ -58,9 +58,12 @@ attn_scores = attn_scores + m*(x-y)
 논문에 따르면, ALiBi는 아래의 그림처럼 학습 중 보지 못했던 긴 시퀀스에 대해서도 다른 인코딩 방식(사인파, RoPE, T5 Bias)과 비교했을 때,성능(PPL)이 거의 떨어지지 않습니다. 
 
 <div align="center">
-  <img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/b825ac2f-1a35-417f-8cc5-4ba112f93957" />
+  <img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/b825ac2f-1a35-417f-8cc5-4ba112f93957" />
 </div>
 
+<div align="center">
+<img width="517" height="171" alt="image" src="https://github.com/user-attachments/assets/d7b7debf-16ce-444d-ab9e-4737c29180fd" />
+</div>
 
 ## 2. GQA(Grouped-query-Attention)
 
