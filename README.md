@@ -12,3 +12,6 @@ $\mathbf{q}_i \mathbf{K}^\top$
 
 
 
+<div align="center">
+  <img width="582" height="250" alt="image" src="https://github.com/user-attachments/assets/de2f0ffb-8755-444a-93a7-3c005108e012" />
+</div>
