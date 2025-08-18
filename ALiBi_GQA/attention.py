@@ -9,15 +9,15 @@ import math
 from config import Config
 
 
-def get_slopes(n_heads, device):
+def get_slopes(num_heads, device):
     # each head has a different m(slope)
-    n = 2 ** math.floor(math.log2(n_heads))
+    n = 2 ** math.floor(math.log2(num_heads))
     m_0 = 2.0 ** (-8.0 / n) # 2^{-8/n}
     m = torch.pow(m_0, torch.arange(1, 1+n))
 
-    if n < n_heads: # if n_heads is not a power of 2, add the remaining slopes
+    if n < num_heads: # if num_heads is not a power of 2, add the remaining slopes
         m_hat_0 = 2.0 ** (-8.0 / 2*n) # 2^{-8/2n}
-        m_hat = torch.pow(m_hat_0, torch.arange(1, 1 + 2*(n_heads-n)))
+        m_hat = torch.pow(m_hat_0, torch.arange(1, 1 + 2*(num_heads-n)))
         m = torch.cat([m, m_hat])
     return m.unsqueeze(-1).unsqueeze(-1).to(device) # m.shape: [num_heads, 1, 1]
 
@@ -159,6 +159,7 @@ if __name__ == '__main__':
 
     attn_output = a.forward(q, k, v, None,True)
     print(attn_output.shape)
+
 
 
 
