@@ -18,9 +18,25 @@ $$
 
 head-specifi slope $m$ 값은 어텐션 헤드(head)의 개수를 이용합니다. 
 
-논문에서는 8개의 head를 사용하며, 각 head의 slope을 아래와 같은 등비급수로 설정합니다. 가장 이상적인 경우는 헤드의 수가 8, 16, 32처럼 2의 거듭제곱일 때입니다. 
+논문에서는 8개의 head를 사용하며, 각 head의 slope을 아래와 같이 $\frac{1}{2^{\tfrac{8}{n}}}$을 공비로 하는 등비급수로 설정합니다. 가장 이상적인 경우는 헤드의 수가 8, 16, 32처럼 2의 거듭제곱일 때입니다. 
 <div align="center">
   <img width="100" height="50" alt="image" src="https://github.com/user-attachments/assets/74674df7-c34a-41e3-b3d7-92d7761df22f" />
 </div>
 
-먼저, 다음과 같이 
+먼저, 다음과 같이 어텐션 헤드의 개수(num_heads)에 가장 가까운 2의 거듭제곱을 구합니다. 
+```
+import math, torch
+
+n = 2 ** math.floor(math.log2(num_heads))
+```
+- 만약 num_heads가 2의 거듭제곱이 아니라면, 일단 가장 가까운 2의 거듭제곱까지의 기울기를 계산한 다음, 나머지 기울기를 추가합니다. 
+
+아래의 m_0은 공비에 해당합니다. 파이토치의 pow()와 m_0을 이용해 등비수열 m을 생성할 수 있습니다. 
+```
+m_0 = 2.0 ** (-8.0 / n) # 2^{-8/n} 
+m = torch.pow(m_0, torch.arange(1, 1+n))
+```
+
+
+
+
