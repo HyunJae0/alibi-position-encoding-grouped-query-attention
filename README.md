@@ -19,6 +19,6 @@ ALiBi 구현에 있어 중요한 건 head-specifi slope $m$ 값을 어떻게 정
 
 논문에서는 8개의 head를 사용하며, 각 head의 slope을 아래와 같은 등비급수로 설정합니다. 
 <div align="center">
-  <img width="139" height="60" alt="image" src="https://github.com/user-attachments/assets/74674df7-c34a-41e3-b3d7-92d7761df22f" />
+  <img width="80" height="40" alt="image" src="https://github.com/user-attachments/assets/74674df7-c34a-41e3-b3d7-92d7761df22f" />
 </div>
 
