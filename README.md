@@ -9,3 +9,7 @@ a_i = \text{softmax}\\left( \mathbf{q}_i \mathbf{K}^\top + m \cdot [- (i-1), \ld
 $$
 
 $\mathbf{q}_i \mathbf{K}^\top$
+
+
+<img width="582" height="250" alt="image" src="https://github.com/user-attachments/assets/6f98758c-880f-4df9-949f-0b1a08f0b9cd" />
+
