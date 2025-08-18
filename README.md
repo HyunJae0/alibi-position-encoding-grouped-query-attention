@@ -36,6 +36,7 @@ m_0 = 2.0 ** (-8.0 / n) # 2^{-8/n}
 m = torch.pow(m_0, torch.arange(1, 1+n))
 ```
 
+이렇게 m은 num_heads에 따라 미리 정해지는 값입니다. 파이토치 기준 requires_grad=False이므로 역전파를 통해 편향 값이 업데이트 되지 않습니다. 
 
 
 
