@@ -1,5 +1,5 @@
-# 인코더의 셀프 어텐션은 MHA
-# 디코더의 셀프 어텐션과 크로스 어텐션은 GQA
+# encoder self attention -> MHA
+# decoder self attention and cross attention -> GQA
 
 import torch
 import torch.nn as nn
@@ -159,6 +159,7 @@ if __name__ == '__main__':
 
     attn_output = a.forward(q, k, v, None,True)
     print(attn_output.shape)
+
 
 
 
