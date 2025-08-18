@@ -6,4 +6,4 @@ a_i = \text{softmax}\\left( \mathbf{q}_i \mathbf{K}^\top + m \cdot [- (i-1), \ld
 = \text{softmax}\\left( \mathbf{q}_i \mathbf{K}^\top + m \cdot [0, 1, \ldots, (i-1)] \right)
 $$
 
-$ \mathbf{q}_i \mathbf{K}^\top $
+$\mathbf{q}_i \mathbf{K}^\top$
