@@ -1,5 +1,5 @@
-# 인코더의 셀프 어텐션은 MHA
-# 디코더의 셀프 어텐션과 크로스 어텐션은 GQA
+# encoder self attention -> MHA
+# decoder self attention, cross attention -> GQA
 
 import torch
 import torch.nn as nn
@@ -14,16 +14,13 @@ def get_slopes(num_heads, device):
     n = 2 ** math.floor(math.log2(num_heads))
     m_0 = 2.0 ** (-8.0 / n) # 2^{-8/n}
     m = torch.pow(m_0, torch.arange(1, 1+n))
-
-    if n < num_heads: # if n_heads is not a power of 2, add the remaining slopes
-        m_hat_0 = 2.0 ** (-8.0 / 2*n) # 2^{-8/2n}
-        m_hat = torch.pow(m_hat_0, torch.arange(1, 1 + 2*(num_heads-n)))
-        m = torch.cat([m, m_hat])
+    
     return m.unsqueeze(-1).unsqueeze(-1).to(device) # m.shape: [num_heads, 1, 1]
 
 def get_relative_positions(seq_length, device):
     x = torch.arange(seq_length, device=device)[None, :]
     y = torch.arange(seq_length, device=device)[:, None]
+    
     return x-y
 
 class ALiBiGroupedQueryAttention(nn.Module):
@@ -146,29 +143,3 @@ class ALiBiGroupedQueryAttention(nn.Module):
         output = self.W_o(gqa_output)
 
         return output
-
-
-
-
-if __name__ == '__main__':
-    config = Config()
-    q = torch.randn(16, 512, 512).to(config.device) # [batch_size, seq_len, embed_dim]
-    k = torch.randn(16, 510, 512).to(config.device)
-    v = torch.randn(16, 510, 512).to(config.device)
-    a = ALiBiGroupedQueryAttention(config, 4).to(config.device)
-
-    attn_output = a.forward(q, k, v, None,True)
-    print(attn_output.shape)
-
-
-
-
-
-
-
-
-
-
-
-
-
