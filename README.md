@@ -110,3 +110,5 @@ gqa_scores = gqa_scores + alibi_bias
 - 구체적으로, 그룹화된 헤드 구조에 맞게 alibi_bias도 num_query_heads차원을 그룹 수(num_groups)와 그룹당 쿼리 헤드 개수(uery_heads_per_group) 두 개의 차원으로 나누면 됩니다.
 - 이렇게 하면 첫 번째 쿼리 헤드에는 첫 번째 alibi_bias가 N번째 쿼리 헤드에는 N번째 alibi_bias가 정확히 매핑됩니다.
 - 즉, ALiBi의 헤드별 고유 bias라는 원칙을 GQA 환경에서도 그대로 유지시킬 수 있습니다. 
+
+<code>attention.py</code>
