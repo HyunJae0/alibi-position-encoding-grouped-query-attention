@@ -1,2 +1,3 @@
-# grouped-query-attention
-GQA implementation pytorch
+# ALiBi, GQA(Grouped-query-Attention)
+
+
