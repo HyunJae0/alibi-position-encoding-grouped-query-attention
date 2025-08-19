@@ -1,6 +1,6 @@
 # ALiBi, GQA
 ## 1. ALiBi(Attention with Linear Biases)
-ALiBi는 상대적 위치 인코딩 방식 중 하나로 아래의 그림처럼 쿼리와 키 벡터를 곱한 어텐션 스코어 행렬에, head-specifi slope $m$이 곱해진 오른쪽에서 왼쪽으로 갈수록 더 작은 값을 가지는 상대 거리 행렬을 더하는 방식입니다.
+ALiBi는 상대적 위치 인코딩 방식 중 하나로 아래의 그림처럼 쿼리와 키 벡터를 곱한 어텐션 스코어 행렬에, head-specific slope $m$이 곱해진 오른쪽에서 왼쪽으로 갈수록 더 작은 값을 가지는 상대 거리 행렬을 더하는 방식입니다.
 
 <div align="center">
   <img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/de2f0ffb-8755-444a-93a7-3c005108e012" />
