@@ -1,6 +1,8 @@
 # ALiBi, GQA
 ## 1. ALiBi(Attention with Linear Biases)
-ALiBi는 상대적 위치 인코딩 방식 중 하나로 아래의 그림처럼 쿼리와 키 벡터를 곱한 어텐션 스코어 행렬에, head-specific slope $m$이 곱해진 오른쪽에서 왼쪽으로 갈수록 더 작은 값을 가지는 상대 거리 행렬을 더하는 방식입니다.
+ALiBi는 상대적 위치 인코딩 방식 중 하나로 아래의 그림처럼 쿼리와 키 벡터를 곱한 어텐션 스코어 행렬에, 오른쪽에서 왼쪽으로 갈수록 더 작은 값을 가지는 상대 거리 행렬을 더하는 방식입니다. 
+
+이때 $m$은 head-specific slope으로, $m$ 값은 어텐션 헤드(head)의 개수를 이용합니다. 
 
 <div align="center">
   <img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/de2f0ffb-8755-444a-93a7-3c005108e012" />
@@ -14,8 +16,6 @@ a_i = \text{softmax}\\left( \mathbf{q}_i \mathbf{K}^\top + m \cdot [- (i-1), \ld
 $$
 
 여기서 $\mathbf{q}_i \mathbf{K}^\top$는 일반적인 어텐션 스코어, $m$은 각 head의 기울기(slope)로 미리 정해지는 값이며, 각 head는 서로 다른 slope를 가집니다. 그리고 [...]는 토큰 간의 상대적 거리를 의미합니다. 위의 식은 $i$ 번째 토큰에 대한 식입니다.
-
-$m$ 값은 어텐션 헤드(head)의 개수를 이용합니다. 
 
 논문에서는 8개의 head를 사용하며, 각 head의 slope을 아래와 같이 $\frac{1}{2^{\tfrac{8}{n}}}$을 공비로 하는 등비급수로 설정합니다. 가장 이상적인 경우는 헤드의 수가 8, 16, 32처럼 2의 거듭제곱일 때입니다. 
 <div align="center">
