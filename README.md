@@ -39,7 +39,7 @@ m = torch.pow(m_0, torch.arange(1, 1+n))
 
 이렇게 m은 num_heads에 따라 미리 정해지는 값입니다. 
 
-다음으로, m과 곱해지는 상대 위치 행렬은 쿼리 토큰의 수와 키 토큰의 수를 이용하여 다음과 같으 구현할 수 있습니다.
+다음으로, m과 곱해지는 상대 위치 행렬은 쿼리 토큰의 수와 키 토큰의 수를 이용하여 다음과 같이 구현할 수 있습니다.
 ```
 x = torch.arange(seq_length, device=device)[None, :]
 y = torch.arange(seq_length, device=device)[:, None]
