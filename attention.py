@@ -65,6 +65,7 @@ class ALiBiGroupedQueryAttention(nn.Module):
         self.attn_weights_dropout = nn.Dropout(p=config.attention_probs_dropout_ratio)
 
         self.register_buffer('m', get_slopes(config.num_query_heads, config.device))
+        self.register_buffer('mask', torch.triu(torch.ones(config.seq_length, config.seq_length), diagonal=1).to(bool), persistent=False) # decoder self-attention mask
 
         init.xavier_normal_(self.W_q.weight)
         init.xavier_normal_(self.W_k.weight)
@@ -75,15 +76,9 @@ class ALiBiGroupedQueryAttention(nn.Module):
         if self.W_v.bias is not None: init.constant_(self.W_v.bias, 0)
         if self.W_o.bias is not None: init.constant_(self.W_o.bias, 0)
 
-    def forward(self, query, key, value, mask, is_cross=False):
+    def forward(self, query, key, value):
         b, q_len, _ = query.shape # batch size, query length
         kv_len = key.shape[1] # key/value length
-
-        if not is_cross:
-            """
-            This code does not consider generation phase
-            """
-            assert q_len == kv_len # self-attention -> num_tokens_query == num_tokens_key
 
         q_proj = self.W_q(query)
         k_proj = self.W_k(key)
@@ -108,27 +103,20 @@ class ALiBiGroupedQueryAttention(nn.Module):
         gqa_scores = Q @ K.transpose(3, 4)
         # gqa_scores.shape: [batch_size, num_groups, query_heads_per_group, query_length, kv_length]
 
-        if not is_cross: # encoder/decoder self-attention
-            alibi_bias = (self.m * get_relative_positions(q_len, query.device)).unsqueeze(0) # expand batch dimension
-            # alibi_bias.shape: [1, num_query_heads, query_length, query_length]
+        alibi_bias = (self.m * get_relative_positions(q_len, query.device)).unsqueeze(0) # expand batch dimension
+        # alibi_bias.shape: [1, num_query_heads, query_length, query_length]
 
-            alibi_bias = alibi_bias.view(1, num_groups, query_heads_per_group, q_len, q_len)
-            # alibi_bias.shape: [1, num_groups, query_heads_per_group, query_length, query_length]
+        alibi_bias = alibi_bias.view(1, num_groups, query_heads_per_group, q_len, q_len)
+        # alibi_bias.shape: [1, num_groups, query_heads_per_group, query_length, query_length]
 
-            gqa_scores = gqa_scores + alibi_bias
+        gqa_scores = gqa_scores + alibi_bias
 
-        if mask is not None:
-            if mask.ndim == 2: # padding mask
-                mask = mask.unsqueeze(1).unsqueeze(2).unsqueeze(3)
-                # mask.shape: [b, 1, 1, 1, len]
-            elif mask.ndim == 3: # padding mask + causal mask
-                mask = mask.unsqueeze(1).unsqueeze(2)
-                # mask.shape: [b, 1, 1, len, len]
-            gqa_scores = gqa_scores.masked_fill(mask == False, torch.finfo(gqa_scores.dtype).min)
-
+        mask_bool = self.mask[:q_len, :q_len]
+        gqa_scores = gqa_scores.masked_fill(mask_bool, torch.finfo(gqa_scores.dtype).min)
+        print(gqa_scores)
         ## attention weights
         gqa_weights = self.attn_weights_dropout(self.softmax(gqa_scores))
-
+        
         ## attention value(context)
         gqa_output = gqa_weights @ V
         # [batch_size, num_groups, query_heads_per_group, query_length, kv_length]
@@ -143,4 +131,3 @@ class ALiBiGroupedQueryAttention(nn.Module):
         output = self.W_o(gqa_output)
 
         return output
-
