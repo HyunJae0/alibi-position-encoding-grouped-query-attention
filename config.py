@@ -3,8 +3,9 @@ import torch
 class Config:
     def __init__(
             self,
-            vocab_size=1,
+            vocab_size=10000,
             pad_idx=0,
+            seq_length=512,
             d_model = 512,
             d_ff=2048,
             num_query_heads=8,
@@ -18,6 +19,7 @@ class Config:
     ):
         self.vocab_size = vocab_size
         self.pad_idx = pad_idx
+        self.seq_length = seq_length
         self.d_model = d_model
         self.d_ff = d_ff
         self.num_layers = num_layers
