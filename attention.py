@@ -109,7 +109,7 @@ class ALiBiGroupedQueryAttention(nn.Module):
         # gqa_scores.shape: [batch_size, num_groups, query_heads_per_group, query_length, kv_length]
 
         if not is_cross: # encoder/decoder self-attention
-            alibi_bias = (self.m * get_relative_positions(q_len, query.device)).unsqueeze(0)
+            alibi_bias = (self.m * get_relative_positions(q_len, query.device)).unsqueeze(0) # expand batch dimension
             # alibi_bias.shape: [1, num_query_heads, query_length, query_length]
 
             alibi_bias = alibi_bias.view(1, num_groups, query_heads_per_group, q_len, q_len)
@@ -143,3 +143,4 @@ class ALiBiGroupedQueryAttention(nn.Module):
         output = self.W_o(gqa_output)
 
         return output
+
