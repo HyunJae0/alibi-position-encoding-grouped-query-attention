@@ -62,7 +62,7 @@ ALiBi는 아래의 그림처럼 학습 중 보지 못했던 긴 시퀀스에 대
   <img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/b825ac2f-1a35-417f-8cc5-4ba112f93957" />
 </div>
 
-또한, 간단한 인코딩 방식을 사용하기 때문에 학습과 추론 처리 시간(초당 처리 토큰(또는 단어) 수)도 매우 효율적입니다. 
+또한, 간단한 인코딩 방식을 사용하기 때문에 학습과 추론 처리 시간도 매우 효율적입니다. 
 
 <div align="center">
 <img width="500" height="200" alt="image" src="https://github.com/user-attachments/assets/d7b7debf-16ce-444d-ab9e-4737c29180fd" />
